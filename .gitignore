@@ -10,3 +10,4 @@ system/unity/devel/
 *.pkl
 *.pth]
 .venv-uiap/
+CMU-VLA-Challenge.code-workspace
