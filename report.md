@@ -56,3 +56,9 @@ uiap-ogn 本体は `/Users/morigakuto/uiap-ogn` を `pip install -e` で参照�
    - 質問フォールバック: 検出失敗時は GT セマンティクスで回答、タイマー超過時は停止を確実に送る。10分制限をタイマーで強制し、未完了でも安全終了。
 
 この構成なら「uiap-ogn 本体は手付かず」「ROS側に薄いブリッジだけ追加」で、非Dockerの個人環境でもシミュレータのトピックだけで動かせます。提出が必要になったら、同じレイアウトをベースに Dockerfile を後付けすればよいです。
+
+## 現在の実装状況
+- `ai_module/src/uiap_ogn_ros` を catkin パッケージとして追加済み。`observation_bridge.py` で `/camera/image` `/registered_scan` `/state_estimation` から uiap の観測辞書を構築し、`policy_node.py` で `RealityITMPolicyV2` を呼び出して `/way_point_with_heading` と `/selected_object_marker` `/numerical_response` に出力する。
+- 質問は `question_router.py` が `/challenge_question` を簡易パースして `/uiap_ogn/object_goal` と `/uiap_ogn/query_type` に流す。`launch/uiap_ogn.launch` でブリッジ＋ポリシー＋ルータをまとめて起動。
+- VLM サーバは `ai_module/src/uiap_ogn_ros/scripts/launch_vlm_servers_nohup.sh` で手元の `uiap-ogn` チェックアウトから起動する想定（ポート 12181-12184 デフォルト）。
+- 起動例: `source ai_module/devel/setup.bash && roslaunch uiap_ogn_ros uiap_ogn.launch start_vlm_servers:=true`。`hfov_deg` や `camera_translation` は `config/params.yaml` で調整。

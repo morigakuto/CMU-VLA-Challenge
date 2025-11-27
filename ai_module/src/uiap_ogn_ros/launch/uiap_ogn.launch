@@ -1,0 +1,15 @@
+<launch>
+  <arg name="config" default="$(find uiap_ogn_ros)/config/params.yaml"/>
+  <arg name="start_vlm_servers" default="false"/>
+
+  <rosparam command="load" file="$(arg config)"/>
+
+  <node pkg="uiap_ogn_ros" type="question_router.py" name="uiap_question_router" output="screen"/>
+
+  <node pkg="uiap_ogn_ros" type="policy_node.py" name="uiap_policy_node" output="screen">
+    <param name="config_path" value="$(arg config)"/>
+  </node>
+
+  <node if="$(arg start_vlm_servers)" pkg="uiap_ogn_ros" type="launch_vlm_servers_nohup.sh"
+        name="uiap_vlm_servers" output="log"/>
+</launch>

@@ -1,0 +1,33 @@
+# Default parameters for running uiap-ogn against CMU VLA simulator topics
+camera_frame_id: camera
+map_frame_id: map
+odom_topic: /state_estimation
+image_topic: /camera/image
+pointcloud_topic: /registered_scan
+traversable_topic: /traversable_area
+object_markers_topic: /object_markers
+question_topic: /challenge_question
+
+# Camera model used to project registered_scan into a depth image
+depth_width: 224
+depth_height: 224
+hfov_deg: 90.0
+vfov_deg: 67.0
+min_depth: 0.2
+max_depth: 8.0
+flip_y_axis: false
+camera_translation: [0.0, 0.0, 0.0]   # xyz offset of camera frame w.r.t sensor odom frame (meters)
+camera_yaw_deg: 0.0                   # yaw offset of camera frame w.r.t sensor odom frame (radians)
+
+# Policy settings
+uiap_root: "/home/gakuto/CMU-VLA-Challenge/uiap-ogn"
+pointnav_weights: "/home/gakuto/CMU-VLA-Challenge/uiap-ogn/data/pointnav_weights.state_dict.pth"
+policy_device: "cpu"
+text_prompt: "Seems like there is a target_object ahead."
+object_map_erosion: 3
+pointnav_stop_radius: 0.9
+publish_rate_hz: 2.0
+
+# Output behavior
+use_traversable_guard: true
+default_marker_height: 0.6
